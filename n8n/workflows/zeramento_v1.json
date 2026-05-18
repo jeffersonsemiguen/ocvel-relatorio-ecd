@@ -1,0 +1,135 @@
+{
+  "name": "ECD Zeramento Webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "zeramento",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "webhook-node",
+      "name": "Webhook Zeramento",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.body.codigo_empresa }}",
+              "operation": "isNotEmpty"
+            }
+          ],
+          "number": [
+            {
+              "value1": "={{ $json.body.ano }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "id": "validate-node",
+      "name": "Validar payload",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SUPABASE_FUNCTIONS_URL }}/manual-fechamento",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $env.SUPABASE_SERVICE_ROLE_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "codigo_empresa",
+              "value": "={{ $json.body.codigo_empresa }}"
+            },
+            {
+              "name": "ano",
+              "value": "={{ $json.body.ano }}"
+            },
+            {
+              "name": "periodo_codigo",
+              "value": "={{ $json.body.periodo_codigo }}"
+            },
+            {
+              "name": "arquivos_pdf",
+              "value": "={{ $json.body.arquivos_pdf || [] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "create-fechamento-node",
+      "name": "Criar fechamento",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [680, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"error\": \"Payload inválido: codigo_empresa, ano e periodo_codigo são obrigatórios\" }",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "id": "error-payload-node",
+      "name": "Erro payload inválido",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [680, 420]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "success-node",
+      "name": "Responder sucesso",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 200]
+    }
+  ],
+  "connections": {
+    "Webhook Zeramento": {
+      "main": [
+        [{ "node": "Validar payload", "type": "main", "index": 0 }]
+      ]
+    },
+    "Validar payload": {
+      "main": [
+        [{ "node": "Criar fechamento", "type": "main", "index": 0 }],
+        [{ "node": "Erro payload inválido", "type": "main", "index": 0 }]
+      ]
+    },
+    "Criar fechamento": {
+      "main": [
+        [{ "node": "Responder sucesso", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

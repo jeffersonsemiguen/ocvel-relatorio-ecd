@@ -2,7 +2,7 @@
 # Machine-readable registry for KB domains
 
 version: "1.0"
-last_updated: "2026-01-28"
+last_updated: "2026-05-05"
 
 # File Size Limits (SINGLE SOURCE OF TRUTH)
 limits:
@@ -345,3 +345,86 @@ domains:
         path: patterns/provider-routing.md
       - name: langchain-integration
         path: patterns/langchain-integration.md
+
+  ocvel-frontend:
+    name: OCVEL Frontend
+    description: Frontend architecture, design system, and component patterns for the OCVEL project (Vite, React, Tailwind v4, shadcn/ui, TypeScript)
+    path: ocvel-frontend/
+    mcp_validated: "2026-05-05"
+    entry_points:
+      index: index.md
+      quick_reference: quick-reference.md
+    concepts:
+      - name: tech-stack
+        path: concepts/tech-stack.md
+        confidence: 0.97
+      - name: design-tokens
+        path: concepts/design-tokens.md
+        confidence: 1.0
+      - name: color-palette
+        path: concepts/color-palette.md
+        confidence: 1.0
+      - name: shadcn-setup
+        path: concepts/shadcn-setup.md
+        confidence: 0.97
+    patterns:
+      - name: component-pattern
+        path: patterns/component-pattern.md
+      - name: dark-mode
+        path: patterns/dark-mode.md
+      - name: tailwind-v4-config
+        path: patterns/tailwind-v4-config.md
+    specs:
+      - name: design-system
+        path: specs/design-system.yaml
+
+  ecd:
+    name: ECD — Escrituracao Contabil Digital
+    description: SPED ECD — escrituracao contabil digital, legislacao, leiaute, geracao e transmissao de arquivos
+    path: ecd/
+    mcp_validated: "2026-05-04"
+    entry_points:
+      index: index.md
+      quick_reference: quick-reference.md
+    concepts:
+      - name: o-que-e-ecd
+        path: concepts/o-que-e-ecd.md
+        confidence: 0.97
+      - name: obrigatoriedade
+        path: concepts/obrigatoriedade.md
+        confidence: 0.97
+      - name: estrutura-arquivo
+        path: concepts/estrutura-arquivo.md
+        confidence: 0.97
+      - name: blocos-registros
+        path: concepts/blocos-registros.md
+        confidence: 0.97
+      - name: plano-contas
+        path: concepts/plano-contas.md
+        confidence: 0.96
+      - name: leiaute-versoes
+        path: concepts/leiaute-versoes.md
+        confidence: 0.96
+      - name: certificado-digital
+        path: concepts/certificado-digital.md
+        confidence: 0.96
+      - name: transmissao
+        path: concepts/transmissao.md
+        confidence: 0.96
+    patterns:
+      - name: geracao-arquivo-ecd
+        path: patterns/geracao-arquivo-ecd.md
+      - name: validacao-inconsistencias
+        path: patterns/validacao-inconsistencias.md
+      - name: bloco-0-identificacao
+        path: patterns/bloco-0-identificacao.md
+      - name: bloco-i-lancamentos
+        path: patterns/bloco-i-lancamentos.md
+      - name: bloco-j-demonstracoes
+        path: patterns/bloco-j-demonstracoes.md
+      - name: bloco-k-cosif
+        path: patterns/bloco-k-cosif.md
+      - name: substituicao-retificacao
+        path: patterns/substituicao-retificacao.md
+      - name: faq-perguntas-respostas
+        path: patterns/faq-perguntas-respostas.md
